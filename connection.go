@@ -14,7 +14,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// Clients include the necessary info to connect to the server and the underlying socket
+// Client include the necessary info to connect to the server and the underlying socket
 type Client struct {
 	Remote *url.URL
 	Ws     *websocket.Conn
@@ -34,7 +34,7 @@ func NewClient(urlStr string, options ...OptAuth) (*Client, error) {
 	return &Client{Remote: r, Ws: ws, Auth: options}, nil
 }
 
-// Client executes the provided request
+// ExecQuery executes the provided request
 func (c *Client) ExecQuery(query string) ([]byte, error) {
 	req := Query(query)
 	return c.Exec(req)
@@ -98,7 +98,7 @@ func (c *Client) ReadResponse() (data []byte, err error) {
 			if msg, exists := ErrorMsg[res.Status.Code]; exists {
 				err = errors.New(msg)
 			} else {
-				err = errors.New("An unknown error occured")
+				err = errors.New("an unknown error occured")
 			}
 			return
 		}
@@ -117,7 +117,7 @@ type AuthInfo struct {
 
 type OptAuth func(*AuthInfo) error
 
-// Constructor for different authentication possibilities
+// NewAuthInfo constructor for different authentication possibilities
 func NewAuthInfo(options ...OptAuth) (*AuthInfo, error) {
 	auth := &AuthInfo{}
 	for _, op := range options {
@@ -129,7 +129,7 @@ func NewAuthInfo(options ...OptAuth) (*AuthInfo, error) {
 	return auth, nil
 }
 
-// Sets authentication info from environment variables GREMLIN_USER and GREMLIN_PASS
+// OptAuthEnv sets authentication info from environment variables GREMLIN_USER and GREMLIN_PASS
 func OptAuthEnv() OptAuth {
 	return func(auth *AuthInfo) error {
 		user, ok := os.LookupEnv("GREMLIN_USER")
@@ -146,7 +146,7 @@ func OptAuthEnv() OptAuth {
 	}
 }
 
-// Sets authentication information from username and password
+// OptAuthUserPass sets authentication information from username and password
 func OptAuthUserPass(user, pass string) OptAuth {
 	return func(auth *AuthInfo) error {
 		auth.User = user
@@ -155,7 +155,7 @@ func OptAuthUserPass(user, pass string) OptAuth {
 	}
 }
 
-// Authenticates the connection
+// Authenticate authenticates the connection
 func (c *Client) Authenticate(requestId string) ([]byte, error) {
 	auth, err := NewAuthInfo(c.Auth...)
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net"
 	"net/http"
 	"net/url"
@@ -96,6 +97,7 @@ func (c *Client) ReadResponse() (data []byte, err error) {
 
 		default:
 			if msg, exists := ErrorMsg[res.Status.Code]; exists {
+				fmt.Println("response from neptune", string(message))
 				err = errors.New(msg)
 			} else {
 				err = errors.New("an unknown error occured")

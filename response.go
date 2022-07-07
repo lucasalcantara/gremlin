@@ -26,7 +26,3 @@ type ResponseResult struct {
 func (r Response) String() string {
 	return fmt.Sprintf("Response \nRequestId: %v, \nStatus: {%#v}, \nResult: {%#v}\n", r.RequestId, r.Status, r.Result)
 }
-
-type ErrorResponse struct {
-
-}
